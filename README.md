@@ -32,6 +32,20 @@ This project implements an FPGA-accelerated neural network for MNIST image class
 - Vitis 2020.2
 - HLS-NN-Lib
 - Pre-trained spooNN model weights
+- Xilinx XRT (Xilinx Runtime Library) for simulation
+
+
+## Environment Setup
+
+Before building and running the project, you need to set up the AWS FPGA development environment.
+**NOTE: this has to be done every time you start a new terminal session.**
+
+To set up the environment, run the following command:
+
+```
+source ./setup_env.sh
+```
+
 
 ## Build and Run
 
