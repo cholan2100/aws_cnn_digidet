@@ -3,8 +3,7 @@
 _x*
 build*
 .run
-*.t
 emconfig.json
 digidet
-aws-fpga
 .ipcache
+mnist.t
