@@ -7,3 +7,4 @@ build*
 emconfig.json
 digidet
 aws-fpga
+.ipcache

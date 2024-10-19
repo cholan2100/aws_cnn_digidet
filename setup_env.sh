@@ -7,4 +7,9 @@ source vitis_setup.sh
 
 # Set up the Xilinx XRT environment
 echo "TODO: Setting up the Xilinx XRT environment..."
+echo "      This is painful and should be automated in the future."
 
+# add NOTE to inform user about AWS configuration
+echo "Configure AWS credentials using 'aws configure' to use AWS FPGAs"
+
+echo "NOTE: setup_env.sh has to be done every time you start a new terminal session."
