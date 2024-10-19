@@ -1,0 +1,6 @@
+*.log
+.Xil
+_x*
+build*
+.run
+*.t
