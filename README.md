@@ -1,4 +1,4 @@
-# FPGA-Accelerated MNIST Image Classification using spooNN and HLS-NN-Lib
+# FPGA-Accelerated MNIST Image Classification using spooNN and HLS-NN-Lib for AWS F1 Platform
 
 This project implements an FPGA-accelerated neural network for MNIST image classification using the spooNN architecture and HLS-NN-Lib, targeting the AWS FPGA platform with Vitis HLS.
 
