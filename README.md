@@ -23,7 +23,7 @@ This project implements an FPGA-accelerated neural network for MNIST image class
 
 1. Clone this repository
 2. Set up the AWS FPGA development environment (see `setup_env.sh`)
-3. Synthesize the HLS design using Vitis HLS
+3. Synthesize the HLS design using Vitis HLS with Makefile
 4. Build and run the FPGA bitstream on an AWS F1 instance
 
 ## Dependencies
@@ -32,7 +32,7 @@ This project implements an FPGA-accelerated neural network for MNIST image class
 - Vitis 2020.2
 - HLS-NN-Lib
 - Pre-trained spooNN model weights
-- Xilinx XRT (Xilinx Runtime Library) for simulation
+- Xilinx XRT (Xilinx Runtime Library) for simulation and hardware execution
 
 
 ## Environment Setup
@@ -56,20 +56,34 @@ make DEVICE=$AWS_PLATFORM HOST_ARCH=x86 TARGET=sw_emu build host run
 ```
 
 To build and run the project on hardware emulation mode, use the following command:
+**Extremely slow!**
 
 ```
-make DEVICE=$AWS_PLATFORM HOST_ARCH=x86 TARGET=hw_emu build host run
+make TARGET=hw_emu build host run
 ```
 
 To build and run the project on hardware mode, use the following command:
 
 ```
-make DEVICE=$AWS_PLATFORM HOST_ARCH=x86 TARGET=hw build host run
+make TARGET=hw build host run
+```
+
+To publish the kernel to AWS, use the following command:
+
+```
+make TARGET=hw AWS_BUCKET_NAME=fpga-tars AWS_DCP_FOLDER=builds AWS_LOGS_FOLDER=logs aws
+```
+
+## Advanced Usage
+Multiple kernels can be synthesized and published to AWS by setting the N_KERNELS variable.
+
+```
+make N_KERNELS=10 TARGET=hw build host
 ```
 
 ## Performance
 
-(Add specific performance metrics once available, such as inference time, resource utilization, etc.)
+TODO: (Add specific performance metrics once available, such as inference time, resource utilization, etc.)
 
 ## Contributing
 

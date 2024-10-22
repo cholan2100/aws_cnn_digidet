@@ -12,6 +12,14 @@ ifeq ($(wildcard $(DATASET_PATH)),)
 $(error DATASET_PATH does not exist, please ensure mnist.t is present in the project directory)
 endif
 
+HOST_ARCH ?= x86
+DEVICE ?= $(AWS_PLATFORM)
+ifndef DEVICE
+$(error DEVICE is not set. Please set DEVICE variable or ensure AWS_PLATFORM is defined)
+endif
+DEVICE := $(DEVICE)
+
+
 # check if faketime tool is installed
 FAKETIME_CHECK := $(shell which faketime 2>/dev/null)
 ifeq ($(FAKETIME_CHECK),)
@@ -219,6 +227,7 @@ help::
 	$(ECHO) "      *$(KERNEL).xclbin* has to be built before running this command using: make build."
 	$(ECHO) "      *$(KERNEL).xclbin* gets copied to AWS S3 bucket: $(AWS_BUCKET_NAME) in folder: $(AWS_DCP_FOLDER)."
 	$(ECHO) "      Logs are saved in AWS S3 bucket: $(AWS_BUCKET_NAME) in folder: $(AWS_LOGS_FOLDER)."
+	$(ECHO) "      AFI of this build is stored in the current directory."
 	$(ECHO) "      *$(KERNEL).awsxclbin* is the output of this command and is used to run the kernel on AWS F1 FPGAs."
 	$(ECHO) ""
 	

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-cl::Context connectToDevice(const std::string &binaryFile, cl::Kernel &krnl_vector_add, cl::CommandQueue &q)
+cl::Context connectToDevice(const std::string &binaryFile, cl::Kernel &krnl, cl::CommandQueue &q)
 {
 	cl_int err;
 	cl::Context context;
@@ -34,7 +34,7 @@ cl::Context connectToDevice(const std::string &binaryFile, cl::Kernel &krnl_vect
 		else
 		{
 			std::cout << "Device[" << i << "]: program successful!\n";
-			OCL_CHECK(err, krnl_vector_add = cl::Kernel(program, "cnndetect", &err));
+			OCL_CHECK(err, krnl = cl::Kernel(program, "cnndetect", &err));
 			valid_device = true;
 			break;
 		}
@@ -47,16 +47,16 @@ cl::Context connectToDevice(const std::string &binaryFile, cl::Kernel &krnl_vect
 	return context;
 }
 
-void submitInputData(cl::Context& context, cl::CommandQueue& q, cl::Kernel& kernel,
+void submitInputData(cl::Context& context, cl::CommandQueue& q, cl::Kernel& krnl,
                      cl::Buffer& buffer_input, cl::Buffer& buffer_output, unsigned int numReps) {
     cl_int err;
     
-    OCL_CHECK(err, err = kernel.setArg(0, buffer_input));
-    OCL_CHECK(err, err = kernel.setArg(1, buffer_output));
-    OCL_CHECK(err, err = kernel.setArg(2, numReps));
+    OCL_CHECK(err, err = krnl.setArg(0, buffer_input));
+    OCL_CHECK(err, err = krnl.setArg(1, buffer_output));
+    OCL_CHECK(err, err = krnl.setArg(2, numReps));
 
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_input}, 0 /* 0 means from host*/));
-    OCL_CHECK(err, err = q.enqueueTask(kernel));
+    OCL_CHECK(err, err = q.enqueueTask(krnl));
 }
 
 void receiveOutput(cl::CommandQueue& q, cl::Buffer& buffer_output) {
@@ -90,9 +90,9 @@ int main(int argc, char **argv)
 	load.x_normalize(0, 'r');
 
 	// Connect to device
-	cl::Kernel krnl_vector_add;
+	cl::Kernel krnl;
 	cl::CommandQueue q;
-	cl::Context context = connectToDevice(binaryFile, krnl_vector_add, q);
+	cl::Context context = connectToDevice(binaryFile, krnl, q);
 
 	// prepare input data
 	size_t buffer_size = sizeof(ap_uint<512>) * 14 * NUM_SAMPLES;	// Per image, we need 14 lines
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 											buffer_size, const_cast<ap_uint<512>*>(results_out.data()), &err));
 
 	// Submit data to device
-	submitInputData(context, q, krnl_vector_add, buffer_input, buffer_output, NUM_SAMPLES);
+	submitInputData(context, q, krnl, buffer_input, buffer_output, NUM_SAMPLES);
 	
 	// Receive output from device and copy to outputBuffer
 	receiveOutput(q, buffer_output);
