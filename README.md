@@ -2,6 +2,8 @@
 
 This project implements an FPGA-accelerated neural network for MNIST image classification using the spooNN architecture and HLS-NN-Lib, targeting the AWS FPGA platform with Vitis HLS.
 
+***1 bit quantization for FPGA optimization with negligible accuracy loss.***
+
 ## Project Overview
 
 - **Neural Network Architecture**: Adopts the spooNN (Sparse Parallel Object-Oriented Neural Network) architecture
